@@ -5,6 +5,12 @@
 
 import { useState, useRef, forwardRef, useImperativeHandle, InputHTMLAttributes } from "react";
 
+export type InputEvent = {
+  getInputValue: () => number;
+  clearInputValue: () => void;
+  inputFocus: () => void;
+};
+
 interface InputWrapperProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   name: string;
@@ -12,11 +18,23 @@ interface InputWrapperProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage: string;
 }
 
-const InputWrapper = forwardRef<"", InputWrapperProps>((props, ref) => {
+const InputWrapper = forwardRef<InputEvent, InputWrapperProps>((props, ref) => {
   const [inputValue, setInputValue] = useState<number>(0);
   const [errorMsgIsVisible, setErrorMsgVisibility] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    getInputValue: () => {
+      return inputValue;
+    },
+    clearInputValue: () => {
+      inputRef.current!.value = "";
+    },
+    inputFocus: () => {
+      inputRef.current!.focus();
+    },
+  }));
 
   return (
     <div className="flex flex-col gap-2">
@@ -30,12 +48,13 @@ const InputWrapper = forwardRef<"", InputWrapperProps>((props, ref) => {
         <small className={errorMsgIsVisible ? "text-red-700 text-sm font-bold" : "hidden"}>{props.errorMessage}</small>
       </header>
       <div
-        className={errorMsgIsVisible ? "flex items-center bg-very-light-grayish-cyan h-10 rounded-sm shadow-sm shadow-zinc-200 border-2 border-transparent duration-75 ease-in has-[input:focus]:border-red-600" : "flex items-center bg-very-light-grayish-cyan h-10 rounded-sm shadow-sm shadow-zinc-200 border-2 border-transparent duration-75 ease-in has-[input:focus]:border-strong-cyan"}>
+        className={errorMsgIsVisible ? "flex items-center bg-very-light-grayish-cyan h-10 rounded-md shadow-sm shadow-zinc-200 border-2 border-transparent duration-75 ease-in has-[input:focus]:border-red-600" : "flex items-center bg-very-light-grayish-cyan h-10 rounded-md shadow-sm shadow-zinc-200 border-2 border-transparent duration-75 ease-in has-[input:focus]:border-strong-cyan"}>
         <span className="w-9 p-2 text-base text-very-dark-cyan">{props.icon}</span>
         <input
           type="number"
           ref={inputRef}
           autoFocus={props.autoFocus}
+          placeholder="0"
           id={props.name}
           className="bg-transparent w-full h-full p-4 text-xl text-right text-dark-grayish-cyan focus:text-very-dark-cyan font-extrabold outline-none"
           onChange={(e) => {

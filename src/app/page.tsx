@@ -1,7 +1,14 @@
 "use client";
 
+// Others importations
 import { FormEvent } from "react";
+
+// Components
 import InputWrapper from "@/components/input/InputWrapper";
+import PercentageButton from "@/components/percentageButton/PercentageButton";
+import PercentageInput from "@/components/percentageInput/PercentageInput";
+
+// Icons
 import { MdOutlineAttachMoney } from "react-icons/md";
 
 export default function Home() {
@@ -13,7 +20,7 @@ export default function Home() {
         <span>tter</span>
       </h3>
 
-      <article className="bg-white p-6 rounded-xl grid grid-cols-2 gap-9 shadow-zinc-500 shadow-sm">
+      <article className="w-[50%] m-auto bg-white p-6 rounded-xl grid grid-cols-2 gap-9 shadow-zinc-500 shadow-sm">
         <form
           onSubmit={(e: FormEvent) => { e.preventDefault(); }}
         >
@@ -22,6 +29,27 @@ export default function Home() {
             label="bill"
             name="bill"
             errorMessage="any error happened"
+            icon={<MdOutlineAttachMoney />}
+          />
+
+          <section className="my-4">
+            <label className="text-base text-very-dark-cyan font-semibold capitalize">Select tip</label>
+            <div className="my-2 grid grid-cols-3 gap-3">
+              <PercentageButton text="5" />
+              <PercentageButton text="10" />
+              <PercentageButton text="15" />
+              <PercentageButton text="25" />
+              <PercentageButton text="50" />
+              <PercentageInput />
+
+            </div>
+          </section>
+
+          <InputWrapper
+            autoFocus
+            label="number of people"
+            name="people"
+            errorMessage="Can't be zero"
             icon={<MdOutlineAttachMoney />}
           />
         </form>
