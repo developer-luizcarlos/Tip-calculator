@@ -10,6 +10,7 @@ import PercentageInput from "@/components/percentageInput/PercentageInput";
 
 // Icons
 import { MdOutlineAttachMoney } from "react-icons/md";
+import { IoMdPeople } from "react-icons/io";
 
 export default function Home() {
   return (
@@ -50,7 +51,7 @@ export default function Home() {
             label="number of people"
             name="people"
             errorMessage="Can't be zero"
-            icon={<MdOutlineAttachMoney />}
+            icon={<IoMdPeople />}
           />
         </form>
         <section className="bg-very-dark-cyan w-full h-auto flex flex-col justify-between gap-10 p-6 rounded-lg">
